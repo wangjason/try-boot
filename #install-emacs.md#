@@ -1,0 +1,26 @@
+;;用f4查看文件及里面的函数定义
+(global-set-key [(f4)] 'speedbar-get-focus)
+;;安装cscope-el，cscope
+sudo apt-get install  cscope-el
+
+;;(require 'xcscope)
+;;只有打开c和c++文件才会加载cscope
+(add-hook 'c-mode-common-hook '(lambda() (require 'xcscope)))
+
+改cscope-indexer脚本，将
+cscope -b -i $LIST_FILE -f $DATABASE_FILE
+替换为
+cscope -q -b -i $LIST_FILE -f $DATABASE_FILE
+Cscope可以通过创建反向索引加速查找
+
+cscope-indexer －r
+
+比如我装了boost 到 /usr/yylocal/include/boost，这个时候我希望每次搜索时， cscope先按照默认规则搜索当前目录中的文件，如果找不到，再搜索 boost目录，那就需要按照如下配置， 加入到你的 init.el中：
+
+(setq cscope-database-regexps
+      '(
+      (".*" (t) ("/usr/yylocal/include/yy-c++") ("/usr/local/include/boost"))
+            )
+            )
+
+}
